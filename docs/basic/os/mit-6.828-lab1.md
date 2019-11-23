@@ -757,7 +757,9 @@ static int runcmd(char *buf, struct Trapframe *tf)
 - [Using the GNU Debugger](https://pdos.csail.mit.edu/6.828/2018/lec/gdb_slides.pdf) MIT 6.828 LEC 3 课程讲义
 - [mit6.828-lab1 系统启动](https://www.jianshu.com/p/af9d7eee635e) 简单的过了一遍，之后可以仔细梳理一下
 
-## 附录 1：`cprintf()` 函数的实现
+## 附录
+
+### 附录 1：`cprintf()` 函数的实现
 
 ```c
 int cprintf(const char *fmt, ...)
@@ -819,7 +821,20 @@ static void putch(int ch, int *cnt)
 
 【TODO】需要查看 `vprintfmt` 是怎么实现的？
 
-## 附录 2：`bootloader` 实模式切换到保护模式
+### 附录 2：大端和小端
+
+> 程序员的自我修养——链接、装载与库 附录 A.1  字节序（Byte Order）
+
+在不同的计算机体系结构中，对于数据（比特、字节、字）等的存储和传输机制有所不同，因而引发了计算机领域中一个潜在但是又重要的问题，即通信双方交流的信息单元应该以怎样的顺序进行传送。目前在各种体系的计算机中通常采用的字节存储机制主要有两种：大端（big-endian）和小端（little-endian）。
+
+首先我们需要理解两个概念：`MSB`（Most Significant Bit/Byte）最重要的位或最重要的字节，对应的，`LSB`（Least Significant Bit/Byte）最不重要的位或最不重要的字节
+
+比如对于一个十六进制整数 `0x12345678`，`0x12` 就是 `MSB`，`0x78` 就是 `LSB`。对于 `0x78` 这个字节，二进制表示为 `01111000`，最左边的 `0` 就是 `MSB`，最右边的 `0` 就是 `LSB`
+
+- 大端（big-endian）规定：`MSB` 在存储时放在低地址，在传输时 `MSB` 放在流的开始；`LSB` 在存储时放在高地址，在传输时 `LSB` 放在流的末尾
+- 小端（little-endian）规定：`MSB` 在存储时放在高地址，在传输时 `MSB` 放在流的末尾；`LSB` 在存储时放在低地址，在传输时 `LSB` 放在流的开始
+
+### 附录 3：`bootloader` 实模式切换到保护模式
 
 ```asm6502
 .globl start
