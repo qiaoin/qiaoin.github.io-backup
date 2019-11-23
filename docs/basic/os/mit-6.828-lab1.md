@@ -757,7 +757,69 @@ static int runcmd(char *buf, struct Trapframe *tf)
 - [Using the GNU Debugger](https://pdos.csail.mit.edu/6.828/2018/lec/gdb_slides.pdf) MIT 6.828 LEC 3 课程讲义
 - [mit6.828-lab1 系统启动](https://www.jianshu.com/p/af9d7eee635e) 简单的过了一遍，之后可以仔细梳理一下
 
-## 附录：`bootloader` 实模式切换到保护模式
+## 附录 1：`cprintf()` 函数的实现
+
+```c
+int cprintf(const char *fmt, ...)
+{
+    va_list ap;
+    int cnt;
+
+    va_start(ap, fmt);
+    cnt = vcprintf(fmt, ap);
+    va_end(ap);
+
+    return cnt;
+}
+```
+
+这里引用 K&R 7.3 变长参数表，省略号表示参数表中的数量和类型是可变的，只能出现在参数表的尾部。如何去处理一个没有名字的参数表呢？头文件 `<inc/stdarg.h>` 中包含一组宏定义，对如何遍历参数表进行了定义（该头文件的实现因不同的机器而不同，但提供的接口是一致的）
+
+- **`va_list`** 类型用于声明一个变量，变量 `ap`（argument pointer，参数指针）将依次引用各参数，宏 **`va_start`** 将 `ap` 初始化为指向第一个无名参数的指针；
+- 在使用 `ap` 之前，宏 **`va_start`** 必须被调用一次；
+- 参数表必须至少包括一个有名参数（例如这里的 `fmt`，它是第一个有名参数，同时也是最后一个有名参数，其后就是无名参数了），宏 **`va_start`** 将最后一个有名参数作为起点；
+- 每次调用 **`va_arg`** 该函数都将返回一个参数，并将 `ap` 指向下一个参数。宏 **`va_arg`** 使用一个类型名来决定返回的对象类型、指针移动的步长；
+- 最后，必须在函数返回前调用宏 **`va_end`**，以完成一些必要的清理工作。
+
+函数的参数实际上都是存放在内存的堆栈中的，**函数参数从右向左依次入栈**（由于内存栈的增长方向是从高地址到低地址，因此参数表前面的有名参数在堆栈的较低地址处），每个参数根据参数类型分配相应大小的栈空间。使用 **`va_start`** 宏初始化 `ap` 之后，`ap` 就指向第一个可变参数。其后我们就可以通过调用 **`va_arg`** 宏一次读取之后的可变参数。
+
+<div align="center"><img src="/mit-6.828-lab1-figures/cprintf-ap.png" width="421px" height="288px" alt="cprintf-ap"></div>
+
+```c
+int vcprintf(const char *fmt, va_list ap)
+{
+    int cnt = 0;
+
+    vprintfmt((void*)putch, &cnt, fmt, ap);
+    return cnt;
+}
+```
+
+函数 `vprintfmt` 各参数依次为：
+
+- 函数指针，这里指向 putch，将一个字符输出在屏幕上
+- 输出的字符数
+- 格式化字符串指针
+- 可变参数指针
+
+```c
+static void putch(int ch, int *cnt)
+{
+    cputchar(ch);
+    *cnt++;
+}
+```
+
+`ch` 代表要输出的字符，`int` 类型变量 32 位，而一个 ASCII 字符只需要 8 位，因此 `int` 类型的低 8 位表示字符对应的 ASCII 码，而第 8 到 15 位表示输出字符的格式（高 16 位是没有用的）；`cnt` 指向一个 `int` 变量，每次往屏幕上输出一个字符就加 1（记录输出字符的个数）
+
+为了在屏幕上输出一个字符，依次调用函数 `putch -> cputchar -> cons_putc -> lpt_putc -> cga_putc`
+
+- `lpt_putc` 做一些输出字符前的准备工作（硬件初始化）
+- `cga_putc` 在屏幕上打印一个字符，接受 `int` 类型的参数，没有返回值
+
+【TODO】需要查看 `vprintfmt` 是怎么实现的？
+
+## 附录 2：`bootloader` 实模式切换到保护模式
 
 ```asm6502
 .globl start
