@@ -6,6 +6,7 @@ title: Lab 1 - Booting a PC
 
 > - 【实验一于2019年4月3日开始做，环境配置及 Exercises，于4月6日完成，初稿报告4月7日】
 > - 【2019年11月2日 第一次 review，发现了很多地方描述不清楚，需要补充上学习操作系统遇到的问题，痛点是什么？】
+> - 【TODO】完善 lab1 实验笔记，只剩下 ex12 符号表部分内容
 
 实验分为三个部分：
 
@@ -755,3 +756,127 @@ static int runcmd(char *buf, struct Trapframe *tf)
 - [C函数调用过程原理及函数栈帧分析](https://segmentfault.com/a/1190000007977460) 函数调用和栈帧讲解的很清晰
 - [Using the GNU Debugger](https://pdos.csail.mit.edu/6.828/2018/lec/gdb_slides.pdf) MIT 6.828 LEC 3 课程讲义
 - [mit6.828-lab1 系统启动](https://www.jianshu.com/p/af9d7eee635e) 简单的过了一遍，之后可以仔细梳理一下
+
+## 附录：`bootloader` 实模式切换到保护模式
+
+```asm6502
+.globl start
+start:
+  .code16                     # Assemble for 16-bit mode
+  cli                         # Disable interrupts
+  cld                         # String operations increment
+
+  # Set up the important data segment registers (DS, ES, SS).
+  xorw    %ax,%ax             # Segment number zero
+  movw    %ax,%ds             # -> Data Segment
+  movw    %ax,%es             # -> Extra Segment
+  movw    %ax,%ss             # -> Stack Segment
+```
+
+`.code16` 表示为 16 位的实模式，`cli` 表示屏蔽系统中断，`cld` 置 DF (Direction Flag) 标识位为 0，表示内存地址向高地址增加，之后清空 DS 、ES 、SS 等段寄存器中的内容为 0。
+
+```asm6502
+  # Enable A20:
+  #   For backwards compatibility with the earliest PCs, physical
+  #   address line 20 is tied low, so that addresses higher than
+  #   1MB wrap around to zero by default.  This code undoes this.
+seta20.1:
+  # 表示从0x64端口读取一个字节的数据存入al寄存器中，0x64作为状态寄存器，
+  # 保存了当前状态，判断读取的数据位1（索引从0开始）是否等于1，如果为1则说明
+  # 输入缓冲器满（0x60/64口有给8042的数据）（注：testb测试字节，与操作）
+  inb     $0x64,%al               # Wait for not busy
+  testb   $0x2,%al
+  jnz     seta20.1
+
+  # 表示写8042的输出端口P2，将al的数据写入0x64端口
+  movb    $0xd1,%al               # 0xd1 -> port 0x64
+  outb    %al,$0x64
+
+seta20.2:
+  inb     $0x64,%al               # Wait for not busy
+  testb   $0x2,%al
+  jnz     seta20.2
+
+  # 写入P2，A20 Gate置为1，至此就开通了A20地址线
+  movb    $0xdf,%al               # 0xdf -> port 0x60
+  outb    %al,$0x60
+```
+
+Intel 推出 x86 架构已近 30 年，刚开始推出的 8086 处理器是一款 16 位的处理器，它标识着 x86 架构的诞生，这种 16 位处理器的数据总线是 16 位的，而地址总线是 20 位的，最多可以寻址 1M 的地址空间。这里有一个为难的问题了，20 根地址总线，所以可以访问的地址是 `2^20 = 1MB`，但由于是 16 位地址模式，能够表示的地址范围是 0-64KB，为了在 8086 下能够访问 1MB 内存，Intel 采取了分段的模式，即 16 位段基地址，16 位偏移。但这个方式有一个问题，其最大的访问空间为 `0xFFFF` : `0xFFFF = 0x10FFEF = 1MB + 64KB - 16Bytes`，8086 只有 20 根地址线，如果访问 `100000h - 10FFEFh` 之间的内存单元，则必须有第 21 根地址线。因此，设置的机制为，当程序员给出超过 1MB（`100000h - 10FFEFh`）的地址时，系统不会认为其访问越界而产生异常，而是自动重新从 0 开始计算。之后的 80286 处理器也是 16 位，但地址总线有 24 位，而且从 80286 开始 CPU 演变出两种工作模式：实模式和保护模式。在实模式下，80286 和其后续系统所表现的行为应该和 8086 所表现的完全一样（向后兼容），但是，80286 芯片却存在一个 Bug：如果程序员访问 `100000h - 10FFEFh` 之间的内存单元，系统会实际访问这块内存，而不是重新从 0 开始。为了解决这个问题，IBM 使用键盘控制器上剩余的一些输出线来管理第 21 根地址线，即 A20 Gate。如果 A20 Gate 被打开, 则当程序员给出 `100000h - 10FFEFh` 之间的地址时，系统将真正访问这块内存区域；如果 A20 Gate 被禁止，则当程序员给出 `100000h - 10FFEFh` 之间的地址的时候,系统仍然使用 8086 的方式。
+
+从 80286 开始，系统出现了一种新的机制，被称为保护模式。那为什么进入保护模式一定要打开 A20 呢，它对保护模式有什么影响？如果 A20 Gate 被禁止，对于 80286 来说，其地址为 24bit，其地址表示为 `EFFFFF`；对于 80386 极其随后的 32-bit 芯片来说，其地址表示为 `FFEFFFFF`。这种表示的意思是，如果 A20 Gate 被禁止，则其第 20-bit 在 CPU 做地址访问的时候是无效的，永远只能被作为 0；如果 A20 Gate 被打开，则其第 20-bit 是有效的，其值既可以为 0，也可以为 1。
+
+至此，我们跟踪历史，明晰了当从实模式切换至保护模式时需要将 A20 Gate 打开，上述代码实现了如何打开 A20 地址线。
+
+```asm6502
+  # Switch from real to protected mode, using a bootstrap GDT
+  # and segment translation that makes virtual addresses
+  # identical to their physical addresses, so that the
+  # effective memory map does not change during the switch.
+  lgdt    gdtdesc    # 将GDT表的首地址加载到GDTR
+
+# Bootstrap GDT
+.p2align 2                                # force 4 byte alignment
+gdt:
+  SEG_NULL                                # null seg
+  SEG(STA_X|STA_R, 0x0, 0xffffffff)       # code seg
+  SEG(STA_W, 0x0, 0xffffffff)             # data seg
+
+gdtdesc:
+  .word   0x17                            # sizeof(gdt) - 1
+  .long   gdt                             # address gdt
+```
+
+定义 GDT 全局描述符表。首先我们可以看到 GDT 表的存放位置是 4 字节对齐的，也就是说 GDT 表的物理首地址是 4 的倍数。然后 `gdt` 标识了 3 个 GDT 表项，使用宏 `SEG_NULL` 和 `SEG`。
+
+```asm6502
+#define SEG_NULL                        \
+    .word 0, 0;                         \
+    .byte 0, 0, 0, 0
+#define SEG(type,base,lim)              \
+    .word (((lim) >> 12) & 0xffff), ((base) & 0xffff);  \
+    .byte (((base) >> 16) & 0xff), (0x90 | (type)),     \
+        (0xC0 | (((lim) >> 28) & 0xf)), (((base) >> 24) & 0xff)
+```
+
+`SEG_NULL` 定义连续 8 个值为 0 的字节，这就表示一个空的 GDT 表项。`SEG` 宏 `type` 表示段属性，`base` 表示段基址，`lim` 则表示段长的界限，给出这三个参数就可以用这个宏来定义一个 GDT 表项（具体含义略过）。
+
+```asm6502
+.set CR0_PE_ON,      0x1         # protected mode enable flag
+
+  movl    %cr0, %eax
+  orl     $CR0_PE_ON, %eax
+  movl    %eax, %cr0
+```
+
+使能保护模式，将一个特定的寄存器，系统寄存器 `CR0` 其第 0 号位置成 1。这里的 `orl` 是“按位或”操作指令，常用来测试两个操作数是否同时为0，或者用来置位某些位，置位就是将一个位数据设置为 1。
+
+```asm6502
+.set PROT_MODE_CSEG, 0x8         # kernel code segment selector
+
+  # Jump to next instruction, but in 32-bit code segment.
+  # Switches processor into 32-bit mode.
+  ljmp    $PROT_MODE_CSEG, $protcseg
+```
+
+最后，用一个跳转指令让系统开始使用 32 位的寻址模式。可以看到最后一句长跳转指令实际上是在系统进入保护模式后执行的。于是在这里 `$PROT_MODE_CSEG` ，代表的是段选择子，从前面的 GDT 表中可以看到基地址是 `0x0`，而偏移地址是`$protcseg`，`$protcseg` 实际上代表的是接下来指令的链接地址，也就是可执行程序在内存中的虚拟地址，只是刚好在这里编译生成的可执行程序 `boot` 的加载地址与链接地址是一致的，于是 `$protcseg` 就相当于指令在内存中存放位置的物理地址，所以这个长跳转可以成功的跳转到下一条指令的位置。
+
+```asm6502
+.set PROT_MODE_DSEG, 0x10         # kernel data segment selector
+
+  .code32                         # Assemble for 32-bit mode
+protcseg:
+  # Set up the protected-mode data segment registers
+  movw    $PROT_MODE_DSEG, %ax    # Our data segment selector
+  movw    %ax, %ds                # -> DS: Data Segment
+  movw    %ax, %es                # -> ES: Extra Segment
+  movw    %ax, %fs                # -> FS
+  movw    %ax, %gs                # -> GS
+  movw    %ax, %ss                # -> SS: Stack Segment
+
+  # Set up the stack pointer and call into C.
+  movl    $start, %esp
+  call bootmain
+```
+
+在进入保护模式后，程序在重新对段寄存器进行了初始化后，设置栈的指针并转入 C 函数 `bootmain` 执行（`ebp <- 0`、`esp <- 0x7c00` 栈 从高地址向低地址顺序存放 ）。可以看到，在 `call bootmain` 之后便是一个无限循环的跳转指令，之所以是无限循环就是这个函数调用永远都不会有返回的可能性，这句程序仅仅只是让整个代码看起来有完整性。
