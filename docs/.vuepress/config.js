@@ -39,8 +39,15 @@ function getOsSidebar() {
       title: "操作系统",
       collapsable: false,
       children: [
-        // 'mit-6.828-lab1',
-        // 'mit-6.828-lab2',
+        '0-os-structures',
+        '1-memory-management',
+        '2-virtual-memory',
+        '3-page-replacement-algo',
+        '4-process-and-thread',
+        '5-scheduler',
+        '6-synchronous-and-mutex',
+        '7-file-system',
+        '8-io-subsystem',
       ]
     },
     {
