@@ -2,18 +2,19 @@ module.exports = {
   title: '偷得浮生半日闲',
   description: 'Just playing around',
   themeConfig: {
-    nav: [
-      { text: '主页', link: '/' },
-      { text: '计算机基础', link: '/basic/' },
-      { text: '编程语言', link: '/lang/' },
-      { text: '分布式系统', link: '/system/' },
-      { text: '乱翻书', link: '/reading/' },
-    ],
+    nav: require('./nav/zh'),
     sidebar: {
-      '/basic/': getBasicSidebar("操作系统", "算法与数据结构", "计算机网络", "数据库", "编译原理"),
+      '/basic/os/': getOsSidebar(),
+      '/basic/algorithm/': getAlgorithmSidebar(),
+      '/basic/network/': getNetworkSidebar(),
+      '/basic/database/': getDatabaseSidebar(),
+      '/basic/compiler/': getCompilerSidebar(),
+      '/basic/linux/': getLinuxSidebar(),
       '/system/': getSystemSidebar("系统", "论文"),
       '/lang/': getLangSidebar("C++", "Go", "源码阅读"),
-      '/reading/': getReadingSidebar("计算机类", "杂的言"),
+      '/reading/': getReadingSidebar("计算机经典书籍", "杂的言"),
+      '/foreign/japanese/': getJapaneseSidebar(),
+      '/foreign/pride-and-prejudice/': getPrideSidebar(),
     },
     sidebarDepth: 0,
     // 禁止用户滚动查看不同部分时，实时计算 URL 中的子标题
@@ -32,48 +33,130 @@ module.exports = {
   }
 }
 
-function getBasicSidebar(groupA, groupB, groupC, groupD, groupE) {
+function getOsSidebar() {
   return [
     {
-      title: groupA,
+      title: "操作系统",
       collapsable: false,
       children: [
-        'os/',
-        'os/mit-6.828-lab1',
-        'os/mit-6.828-lab2',
+        // 'mit-6.828-lab1',
+        // 'mit-6.828-lab2',
       ]
     },
     {
-      title: groupB,
+      title: "MIT 6.828 实验",
       collapsable: false,
       children: [
-        // 'algorithm/',
+        'mit-6.828-lab1',
+        'mit-6.828-lab2',
+      ]
+    },
+  ]
+}
+
+function getAlgorithmSidebar() {
+  return [
+    {
+      title: "算法与数据结构",
+      collapsable: false,
+      children: [
+        // 'mit-6.828-lab1',
+        // 'mit-6.828-lab2',
       ]
     },
     {
-      title: groupC,
+      title: "LeetCode",
       collapsable: false,
       children: [
-        'network/',
-        'network/illustration-http',
-        'network/tcp-ip-illustrated',
-        'network/unix-network-programming',
+        // 'mit-6.828-lab1',
+        // 'mit-6.828-lab2',
+      ]
+    },
+  ]
+}
+
+function getNetworkSidebar() {
+  return [
+    {
+      title: "计算机网络",
+      collapsable: false,
+      children: [
+        'illustration-http',
+        'tcp-ip-illustrated',
+        'unix-network-programming',
       ]
     },
     {
-      title: groupD,
+      title: "网络编程实战",
       collapsable: false,
       children: [
-        // 'database/',
+        // 'mit-6.828-lab1',
+        // 'mit-6.828-lab2',
+      ]
+    },
+  ]
+}
+
+function getDatabaseSidebar() {
+  return [
+    {
+      title: "数据库",
+      collapsable: false,
+      children: [
+        // 'mit-6.828-lab1',
+        // 'mit-6.828-lab2',
       ]
     },
     {
-      title: groupE,
+      title: "MIT 6.xxx 实验",
       collapsable: false,
       children: [
-        // 'compiler/',
+        // 'mit-6.828-lab1',
+        // 'mit-6.828-lab2',
       ]
-    }
+    },
+  ]
+}
+
+function getCompilerSidebar() {
+  return [
+    {
+      title: "编译原理",
+      collapsable: false,
+      children: [
+        // 'mit-6.828-lab1',
+        // 'mit-6.828-lab2',
+      ]
+    },
+    {
+      title: "MIT 6.xxx 实验",
+      collapsable: false,
+      children: [
+        // 'mit-6.828-lab1',
+        // 'mit-6.828-lab2',
+      ]
+    },
+  ]
+}
+
+function getLinuxSidebar() {
+  return [
+    {
+      title: "Linux 基础",
+      collapsable: false,
+      children: [
+        // 'mit-6.828-lab1',
+        // 'mit-6.828-lab2',
+      ]
+    },
+    {
+      title: "小工具",
+      collapsable: false,
+      children: [
+        // 'mit-6.828-lab1',
+        // 'mit-6.828-lab2',
+      ]
+    },
   ]
 }
 
@@ -121,7 +204,7 @@ function getLangSidebar(groupA, groupB, groupC) {
       title: groupC,
       collapsable: false,
       children: [
-        'opensource/leveldb',
+        'opensource/',
         // 'opensource/',
       ]
     }
@@ -149,5 +232,39 @@ function getReadingSidebar(groupA, groupB) {
         // 'enjoy/',
       ]
     }
+  ]
+}
+
+function getJapaneseSidebar() {
+  return [
+    {
+      title: "标准日本语",
+      collapsable: false,
+      children: [
+        // 'mit-6.828-lab1',
+        // 'mit-6.828-lab2',
+      ]
+    },
+    {
+      title: "日本习俗",
+      collapsable: false,
+      children: [
+        // 'mit-6.828-lab1',
+        // 'mit-6.828-lab2',
+      ]
+    },
+  ]
+}
+
+function getPrideSidebar() {
+  return [
+    {
+      title: "傲慢与偏见",
+      collapsable: false,
+      children: [
+        // 'mit-6.828-lab1',
+        // 'mit-6.828-lab2',
+      ]
+    },
   ]
 }
