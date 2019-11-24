@@ -9,9 +9,14 @@ module.exports = {
       '/basic/network/': getNetworkSidebar(),
       '/basic/database/': getDatabaseSidebar(),
       '/basic/compiler/': getCompilerSidebar(),
+      '/basic/math/': getMathSidebar(),
       '/basic/linux/': getLinuxSidebar(),
       '/system/': getSystemSidebar("系统", "论文"),
-      '/lang/': getLangSidebar("C++", "Go", "源码阅读"),
+      '/lang/cpp/': getCppSidebar(),
+      '/lang/go/': getGoSidebar(),
+      '/sourcecode/linux/': getSourceLinuxSidebar(),
+      '/sourcecode/redis/': getSourceRedisSidebar(),
+      '/sourcecode/leveldb/': getSourceLeveldbSidebar(),
       '/reading/': getReadingSidebar("计算机经典书籍", "杂的言"),
       '/foreign/japanese/': getJapaneseSidebar(),
       '/foreign/pride-and-prejudice/': getPrideSidebar(),
@@ -30,7 +35,13 @@ module.exports = {
   },
   markdown: {
     lineNumbers: false
-  }
+  },
+  plugins: [
+    ['vuepress-plugin-mathjax', {
+      target: 'svg',
+    }],
+    ['@vuepress/back-to-top', false],  // 禁用主题内的 back-to-top
+  ],
 }
 
 function getOsSidebar() {
@@ -146,6 +157,27 @@ function getCompilerSidebar() {
   ]
 }
 
+function getMathSidebar() {
+  return [
+    {
+      title: "线性代数",
+      collapsable: false,
+      children: [
+        'essense-of-linear-algebra',
+        // 'mit-6.828-lab2',
+      ]
+    },
+    {
+      title: "密码学",
+      collapsable: false,
+      children: [
+        // 'mit-6.828-lab1',
+        // 'mit-6.828-lab2',
+      ]
+    },
+  ]
+}
+
 function getLinuxSidebar() {
   return [
     {
@@ -158,6 +190,48 @@ function getLinuxSidebar() {
     },
     {
       title: "小工具",
+      collapsable: false,
+      children: [
+        // 'mit-6.828-lab1',
+        // 'mit-6.828-lab2',
+      ]
+    },
+  ]
+}
+
+function getCppSidebar() {
+  return [
+    {
+      title: "C++ 基础",
+      collapsable: false,
+      children: [
+        'object-based-and-object-oriented',
+        'object-model',
+      ]
+    },
+    {
+      title: "STL",
+      collapsable: false,
+      children: [
+        // 'mit-6.828-lab1',
+        // 'mit-6.828-lab2',
+      ]
+    },
+  ]
+}
+
+function getGoSidebar() {
+  return [
+    {
+      title: "多路复用",
+      collapsable: false,
+      children: [
+        // 'epoll',
+        // 'mit-6.828-lab2',
+      ]
+    },
+    {
+      title: "调度器",
       collapsable: false,
       children: [
         // 'mit-6.828-lab1',
@@ -188,33 +262,66 @@ function getSystemSidebar(groupA, groupB) {
   ]
 }
 
-function getLangSidebar(groupA, groupB, groupC) {
+function getSourceLinuxSidebar() {
   return [
     {
-      title: groupA,
+      title: "多路复用",
       collapsable: false,
       children: [
-        'cpp/',
-        'cpp/object-based-and-object-oriented',
-        'cpp/object-model'
+        'epoll',
+        // 'mit-6.828-lab2',
       ]
     },
     {
-      title: groupB,
+      title: "调度器",
       collapsable: false,
       children: [
-        // 'paper/',
-        // 'paper/',
+        // 'mit-6.828-lab1',
+        // 'mit-6.828-lab2',
+      ]
+    },
+  ]
+}
+
+function getSourceRedisSidebar() {
+  return [
+    {
+      title: "多路复用",
+      collapsable: false,
+      children: [
+        // '',
+        // 'mit-6.828-lab2',
       ]
     },
     {
-      title: groupC,
+      title: "调度器",
       collapsable: false,
       children: [
-        'opensource/',
-        // 'opensource/',
+        // 'mit-6.828-lab1',
+        // 'mit-6.828-lab2',
       ]
-    }
+    },
+  ]
+}
+
+function getSourceLeveldbSidebar() {
+  return [
+    {
+      title: "多路复用",
+      collapsable: false,
+      children: [
+        // '',
+        // 'mit-6.828-lab2',
+      ]
+    },
+    {
+      title: "调度器",
+      collapsable: false,
+      children: [
+        // 'mit-6.828-lab1',
+        // 'mit-6.828-lab2',
+      ]
+    },
   ]
 }
 

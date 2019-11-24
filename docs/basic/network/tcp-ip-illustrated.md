@@ -41,7 +41,7 @@ Introduction 概述
   2. 处理网络中的 packets
   3. 数据流，TCP 和 UDP
   4. 处理应用细节
-  
+
 - FTP 文件传输协议
 
 - Telnet/SSH 登陆远程主机
@@ -87,20 +87,20 @@ Introduction 概述
 - IP fragmentation --- IP 分片
 
 - 封包从上往下：
-  
+
   - 应用层不同的应用使用 TCP/UDP 进行传输，TCP/UDP 在头部信息中保存了源端口号和目的端口号（16-bit，使用端口号来区分不同的应用）
   - TCP/UDP/ICMP/IGMP 向 IP 传送数据，IP 在头部信息中有 8-bit 的协议域（protocol field）【1-ICMP，2-IGMP，6-TCP，7-UDP）
   - IP/ARP/RARP 向网络接口（network interface）传输数据，在以太网帧（Ethernet frame）头部有 16-bit 的帧域（frame type field）
-  
+
 - 当目的主机接收到数据帧（incoming frame）之后，从网络接口开始，根据各个头部信息中的标识域（identifiers in certain header）一层层往上传，进行解包操作（demultiplexing）
 
 - 解包从下往上：
-  
+
   -  incoming frame
   -  demultiplexing based on frame type in Ethernet header
   -  demultiplexing based on protocol value in IP header
   -  demultiplexing based on destination port number in TCP or UDP header
-  
+
 - 客户端-服务器模式（C-S Model），server 可以分为两类：iterative 和 concurrent
 
 - iterative server 在多个步骤上轮询，在 step 2 服务器是阻塞的，处理已到来的客户端请求时，其他的客户端就不能发送连接请求：
@@ -108,13 +108,13 @@ Introduction 概述
   2. 处理客户端请求
   3. 将请求结果回包发送给客户端
   4. 跳转到 step 1
-  
+
 - concurrent server
-  
+
   1. 等待客户端创建连接
   2. fork 一个新的 server 去处理接收到的请求
   3. 跳转到 step 1
-  
+
 - > As a general rule, TCP servers are concurrent, and UDP servers are iterative, but there are a few exceptions.
 
 - > The lowercase *internet* means multiple networks connected together, using a common ptotocol suite. The uppercase *Internet* refers to the collection of hosts around the world that can communicate with each other using TCP/IP. While the *Internet* is an *internet*, the reverse is not true.
@@ -129,7 +129,7 @@ Introduction 概述
 
   - > If IP has a datagram to send, and the datagram is larger than the link layer's MTU, IP performs **fragmentation**, breaking the datagram up into small pieces (fragments), so that each fragment is smaller than the MTU.
 
-  - `netstat -i` 
+  - `netstat -i`
 
   - 当有着不同 MTU 的两台主机发生网络通信时，关注小的 MTU，称为 Path MTU
 
@@ -152,11 +152,11 @@ Introduction 概述
 - > By convention, most systems assign the IP address of 127.0.0.1 to the loopback interface and assign it the name localhost.
 
 - 在处理环回地址时，most implementations perform complete processing of the data in the transport layer and network layer, and only loop the IP datagram back to itself when the datagram leaves the bottom of the network layer.
-  
+
 1. Everything sent to loopback address (normally 127.0.0.1) appears as IP input.
   2. Datagrams sent to a broadcast address or a multicast address are copied to the loopback interface and sent out on the Ethernet. This is because the definition of broadcasting and multicasting includes the sending host.
   3. Anything sent to one of the host's own IP address is sent to the loopback interface.
-  
+
 - > While it may seem inefficient to perform all the transport layer and IP layer processing of the loopback data, it simplifies the design because **the loopback interface appears as just another link layer to the network layer**. The network layer passes a datagram to the loopback interface like any other link layer, and it happens that loopback interface then puts the datagram back onto IP's input queues.
 
 - > One reason for the success of TCP/IP is its ability to work on top of almost any data-link technology.
@@ -182,7 +182,7 @@ Introduction 概述
 
 **IP Header Format**
 
-```shell
+```shell-session
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -209,13 +209,13 @@ Introduction 概述
   2. `maximize throughput`
   3. `maximize reliability`
   4. `minimize monetary cost`
-    
+
     > The *Type of Servie* feature is not supported by most TCP/IP implementations today.
-  
+
 - *Total Length* 16-bit，IP datagram 的总包大小。使用这个域和 *IHL* 就能够知道 IP datagram 的数据部分的起始地址和数据大小。
-  
+
     > This field changes when a datagram is framented.
-    
+
 - *Identification* 16-bit，唯一标识由主机发送的每一个 datagrams（每次递增 1）。
 
 - *Flags* 3-bit
@@ -227,18 +227,18 @@ Introduction 概述
 - *Protocol* 8-bit，由于 IP 作为 TCP/UDP/ICMP/IGMP 通信的中转方，*Protocol* 域用于标识上层协议，这样在 IP 层接收到数据包之后，可以根据 *Protocol* 域执行解包操作（demultipling incoming datagrams）。
 
 - *Header Checksum* 16-bit，仅为计算 IP Header 的校验码。参考 [IP数据报首部checksum的计算](https://www.cnblogs.com/zafu/p/10822164.html)。在发送时：
-  
+
   1. *Checksum* 域先设置为 0；
   2. 将整个 IP Header 分为多个 16-bit，执行求和；
   3. 如果和的高 16-bit 不为 0，则将和的高 16-bit 和低 16-bit 反复相加，直到和的高 16-bit 为 0，从而获得一个 16-bit 的值；
   4. 对得到的 16-bit 的值取反码，填入到 *Checksum* 中
-  
+
   当接受到 IP datagram 时，
-  
+
   1. 直接将接收到的整个 IP Header 分为多个 16-bit，求和；
   2. 如果和的高 16-bit 不为 0，则将和的高 16-bit 和低 16-bit 反复相加，直到和的高 16-bit 为 0，从而获得一个 16-bit 的值；
   3. 对得到的 16-bit 的值取反码，若结果为 0，则合法；否则，丢弃这个 datagram（No error message is generated. It is up to the higher layer to somehow detect the missing datagram and retransmit.）
-  
+
 - *Source Address* & *Destination Address* both 32-bit，源 IP 地址和目的 IP 地址
 
 - *Options (if any)*  可变长度，对 IP datagram 的补充信息进行定义：
@@ -273,7 +273,7 @@ Introduction 概述
   2. 非本机生成的 datagrams：来自 network interface，需要对接收到的 datagrams 进行转发（forwarding）
      - IP 检查 datagram 的目的 IP 地址是否与本机 IP 地址相同，或者为一个广播地址
      - 若是，datagram 会交由其 IP Header 中标识的协议类型（*protocol*）所对应的网络模块（protocol module）进行处理
-     - 若不是，1）如果接收到 datagram 的主机配置为可以作为一个路由器，该 datagram 就会被转发出去，2）否则，就会将该 datagram 丢弃（silently discarded，不会通知源主机） 
+     - 若不是，1）如果接收到 datagram 的主机配置为可以作为一个路由器，该 datagram 就会被转发出去，2）否则，就会将该 datagram 丢弃（silently discarded，不会通知源主机）
 
 **路由表（Routing table）**【看不明白】
 
@@ -283,7 +283,7 @@ Introduction 概述
 
 - Linux 查看 `route -n`，Mac 查看 `netstat -nr`
 
-```shell
+```shell-session
 Kernel IP routing table
 Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 default         9.134.112.1     0.0.0.0         UG    0      0        0 eth1
@@ -319,7 +319,7 @@ link-local      0.0.0.0         255.255.0.0     U     1002   0        0 eth1
 
      这里跟子网掩码有关系
 
-  3. 在路由表中查找有 “default” 标签的条目，若找到，将数据包发送给 *Gateway* 
+  3. 在路由表中查找有 “default” 标签的条目，若找到，将数据包发送给 *Gateway*
 
 - 查找是按照顺序进行的，若三步执行下来还是未找到，这个 datagram 就是 undeliverable 的，就会给生产这个 datagram 的应用程序返回 “host unreachable” 或 “network unreachable”
 
@@ -350,7 +350,7 @@ link-local      0.0.0.0         255.255.0.0     U     1002   0        0 eth1
   4. 主机 E 接收到来自主机 D 的 datagrams，检查 datagrams 的目的 IP 地址与自身（主机 E）的 IP 地址不相同，同时主机 E 被配置作为路由器，因此它会将 datagrams 转发出去。同样地，主机 E 查找路由表，未找到  (networkID, hostID) 和 hostID 相同的条目，因此使用 “default” 标识的条目（*Gateway* 为主机 F），将 datagrams 发送给 next-hop router 主机 F
      - 由主机 E 发送给主机 F 的 datagrams
      - 以太网帧中，链路层头部包含的是主机 F 的 48-bit Ethernet 地址，IP 层头部包含的是目的主机 C 的 IP 地址（192.48.96.9）
-  
+
 - 上面两个例子，有以下几个要点：
 
   - 路由表中的 “default” 条目
@@ -374,7 +374,7 @@ link-local      0.0.0.0         255.255.0.0     U     1002   0        0 eth1
 - > Subnetting reduce the size of the Internet's routing tables.
 
   - 只需要知道 *gateway* 的 IP 地址，外界就能够与该网关下所有的机器进行通信
-  - 外界 router 只需要在其路由表中保存一条记录即可，怎么找到网关  *gateway* 
+  - 外界 router 只需要在其路由表中保存一条记录即可，怎么找到网关  *gateway*
   - *gateway*  需要知道各个子网的编号
 
 **子网掩码（Subnet mask）**
@@ -395,7 +395,7 @@ link-local      0.0.0.0         255.255.0.0     U     1002   0        0 eth1
 
 - `ifconfig(8)` 在 bootstrap 阶段就会执行，用来设置主机的各个网卡设备
 
-```shell
+```shell-session
 $ ifconfig -a
 eth1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
         inet 9.134.112.130  netmask 255.255.240.0  broadcast 9.134.127.255
@@ -418,7 +418,7 @@ lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
 
 **netstat Command（netstat 命令）**
 
-```shell
+```shell-session
 $ netstat -in
 Kernel Interface table
 Iface      MTU    RX-OK RX-ERR RX-DRP RX-OVR    TX-OK TX-ERR TX-DRP TX-OVR Flg
@@ -558,7 +558,7 @@ lo       65536  1139018      0      0 0       1139018      0      0      0 LRU
 
 【20191111】
 
-```shell
+```shell-session
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -580,7 +580,7 @@ lo       65536  1139018      0      0 0       1139018      0      0      0 LRU
 
 ICMP message 的格式如下：
 
-```shell
+```shell-session
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -608,11 +608,11 @@ ICMP message 的格式如下：
   1. Query messages：
   2. Error messages：特殊处理，例如，当一个 error message 的请求到来时，不会产生 error message 回复（如果对接收到的 error message 产生回复，就会产生“雪崩”）
      - 一条 ICMP error message 总是包含 IP header + IP datagram data 部分的前 8 个 bytes
-     
+
      - IP header 的 *Protocol* 域会标识协议类型 TCP 或 UDP
-     
+
      - IP datagram data 部分的前 8 个 bytes，即为 TCP header 或 UDP header，对应的 *port* 域会标识特定的用户应用（源端口号，目的端口号）
-     
+
      - > Both TCP and UDP store the source and destination port number in the first 8 bytes of their headers.
 
 > An ICMP error message is **never** generated in response to:
@@ -641,7 +641,7 @@ ICMP message 的格式如下：
   >
   > Both have an identifier and sequence number in the ICMP message. The sending application stores a unique value in the identifier field, to distinguish between replies for itself and replies for other processes. The sequence number field lets the client match replies with request.
 
-- Round-trip time (RTT) -- 接收到回复的时间 - 请求发送出去的时间 
+- Round-trip time (RTT) -- 接收到回复的时间 - 请求发送出去的时间
 
 - Network Time Protocol (NTP) NFC 1305
 
@@ -667,7 +667,7 @@ ICMP message 的格式如下：
 
 > Years ago we could make the unqualified statement that if we can't Ping a host, we can't Telnet or FTP to that host. With the increased awareness of security on the Internet, **routers that provide access control lists, and fireware gateways**, unqualified statements like this no longer true. **Reachability of a given host may depend not only on reachability at the IP layer, but also on what protocol is being used, and the port numbers involved**.
 
-```shell
+```shell-session
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -748,7 +748,7 @@ ICMP message 的格式如下：
   4. **Traceroute** 持续发送 *TTL* 域递增的 IP datagram，直到最终达到目的主机（目的主机接收到的 IP datagram 的 *TTL* 域为 1）
   5. 发送 UDP datagrams 到目的主机，并且选择目的端口号为 unlikely value (larger than 30,000)，确保目的主机上没有应用程序在使用该端（应用程序使用端口号进行区分）。当 UDP datagrams 到达目的主机时，*TTL* 域为 1，就会将 datagram 传递给上层应用进行处理，但这里并没有对应的应用程序在执行，因此 UDP moudle 会产生一个 ICMP port unreachable error message 返回给发送方
   6. 发送方通过区分返回的 ICMP message 的类型就能够知道是否已经到达目的主机，ICMP time exceeded message 和 ICMP port unreachable error message
-  - 
+  -
 
 
 

@@ -9,11 +9,28 @@ module.exports = [
             { text: '计算机网络', link: '/basic/network/' },
             { text: '数据库', link: '/basic/database/' },
             { text: '编译原理', link: '/basic/compiler/' },
+            { text: '数学', link: '/basic/math/' },
             { text: 'Linux', link: '/basic/linux/' },
         ]
     },
-    { text: '编程语言', link: '/lang/' },
+    {
+        text: '编程语言',
+        ariaLabel: '编程语言',
+        items: [
+            { text: 'C++', link: '/lang/cpp/' },
+            { text: 'Go', link: '/lang/go/' },
+        ]
+    },
     { text: '分布式系统', link: '/system/' },
+    {
+        text: '源码阅读',
+        ariaLabel: '源码阅读',
+        items: [
+            { text: 'Linux', link: '/sourcecode/linux/' },
+            { text: 'Redis', link: '/sourcecode/redis/' },
+            { text: 'LevelDB', link: '/sourcecode/leveldb/' },
+        ]
+    },
     { text: '乱翻书', link: '/reading/' },
     {
         text: '外语学习',
