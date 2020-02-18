@@ -1,6 +1,6 @@
 module.exports = {
-  title: '偷得浮生半日闲',
-  description: 'Just playing around',
+  title: '在桥边',
+  description: '偷得浮生半日闲',
   themeConfig: {
     nav: require('./nav/zh'),
     sidebar: {
@@ -14,24 +14,26 @@ module.exports = {
       '/system/': getSystemSidebar("系统", "论文"),
       '/lang/cpp/': getCppSidebar(),
       '/lang/go/': getGoSidebar(),
+      '/lang/js/': getJsSidebar(),
+      '/lang/py/': getPySidebar(),
       '/sourcecode/linux/': getSourceLinuxSidebar(),
       '/sourcecode/redis/': getSourceRedisSidebar(),
       '/sourcecode/leveldb/': getSourceLeveldbSidebar(),
       '/reading/': getReadingSidebar("计算机经典书籍", "杂的言"),
-      '/foreign/japanese/': getJapaneseSidebar(),
-      '/foreign/pride-and-prejudice/': getPrideSidebar(),
+      // '/foreign/japanese/': getJapaneseSidebar(),
+      // '/foreign/pride-and-prejudice/': getPrideSidebar(),
     },
     sidebarDepth: 0,
     // 禁止用户滚动查看不同部分时，实时计算 URL 中的子标题
     activeHeaderLinks: true,
     // 基于 git，使用的最后更新时间（时间戳）来自 git commit
-    lastUpdated: '上次更新',
+    // lastUpdated: '上次更新',
     // git 仓库和编辑链接
     repo: 'qiaoin/qiaoin.github.io',
     docDir: 'docs',
     docsBranch: 'source',
-    editLinks: true,
-    editLinkText: '帮助改善此页面吧',
+    // editLinks: true,
+    // editLinkText: '帮助改善此页面吧',
   },
   markdown: {
     lineNumbers: false
@@ -164,15 +166,14 @@ function getMathSidebar() {
       collapsable: false,
       children: [
         'essense-of-linear-algebra',
-        // 'mit-6.828-lab2',
       ]
     },
     {
       title: "密码学",
       collapsable: false,
       children: [
-        // 'mit-6.828-lab1',
-        // 'mit-6.828-lab2',
+        'prime-number',
+        'rsa',
       ]
     },
   ]
@@ -192,7 +193,7 @@ function getLinuxSidebar() {
       title: "小工具",
       collapsable: false,
       children: [
-        // 'mit-6.828-lab1',
+        'git-basis',
         // 'mit-6.828-lab2',
       ]
     },
@@ -228,6 +229,50 @@ function getGoSidebar() {
       children: [
         // 'epoll',
         // 'mit-6.828-lab2',
+      ]
+    },
+    {
+      title: "调度器",
+      collapsable: false,
+      children: [
+        // 'mit-6.828-lab1',
+        // 'mit-6.828-lab2',
+      ]
+    },
+  ]
+}
+
+function getJsSidebar() {
+  return [
+    {
+      title: "开始学习 JavaScript",
+      collapsable: false,
+      children: [
+        'basis',
+        'miniprogram',
+        'notes-on-good-parts',
+      ]
+    },
+    {
+      title: "调度器",
+      collapsable: false,
+      children: [
+        // 'mit-6.828-lab1',
+        // 'mit-6.828-lab2',
+      ]
+    },
+  ]
+}
+
+function getPySidebar() {
+  return [
+    {
+      title: "Python 入门学习",
+      collapsable: false,
+      children: [
+        'basis',
+        'miniprogram',
+        'notes-on-good-parts',
       ]
     },
     {
@@ -342,8 +387,8 @@ function getReadingSidebar(groupA, groupB) {
       title: groupB,
       collapsable: false,
       children: [
-        // 'enjoy/',
-        // 'enjoy/',
+        'enjoy/',
+        'enjoy/economics',
       ]
     }
   ]
@@ -355,7 +400,7 @@ function getJapaneseSidebar() {
       title: "标准日本语",
       collapsable: false,
       children: [
-        // 'mit-6.828-lab1',
+        'introduce',
         // 'mit-6.828-lab2',
       ]
     },

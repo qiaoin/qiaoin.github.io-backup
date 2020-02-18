@@ -307,7 +307,7 @@ link-local      0.0.0.0         255.255.0.0     U     1002   0        0 eth1
   - *Flags* 标识位。
     - 其中一位标识 *Destination* 的 IP 地址对应是 a host 还是 a network
     - 其中一位标识 *Gateway* 是 next-hop router 还是 a directly connected interface
-  - *Netif* 表示 datagrams 将由哪一个网卡（network interface）进行传输
+  - *Iface* 表示 datagrams 将由哪一个网卡（network interface）进行传输
 
 - > IP routing is done on a hop-by-hop basis. All that  IP routing provides is the IP address of the next-hop router to which the datagram is sent.
 
@@ -658,10 +658,11 @@ ICMP message 的格式如下：
 
 【20191113】
 
-> The name "ping" is taken from the sonar operation to locate objects (声纳定位物体). The Ping program was written by Mike Muuss and it tests whether another host is reachable. The program sends an ICMP echo request message to a host, expecting an ICMP echo reply to be returned.
+> The name "ping" is taken from the sonar operation to locate objects (声纳定位物体). The Ping program was written by Mike Muuss and **it tests whether another host is reachable**. The program sends an ICMP echo request message to a host, expecting an ICMP echo reply to be returned.
 >
-> Ping also measures the round-trip time to the host, giving us some indication of how "far away" that host is.
+> Normally, if you can't Ping a host, you won't be able to Telnet or FTP to that host. Conversely, if you can't Telnet to a host, Ping is often the starting point to determine what the problem is. Ping also measures the round-trip time to the host, giving us some indication of how "far away" that host is.
 
+- Ping 用来确认一台远程主机是否是 reachable 的，如果 Ping 不通，其他的上层应用如 Telnet 或 FTP 更不会通
 - 将 Ping 作为一个诊断工具（判断是否可以连接上另外的一台主机），去进一步挖掘 ICMP 协议
 - 同时，可以使用 Ping 去检查 IP record route 和 timestamp options
 
@@ -748,7 +749,66 @@ ICMP message 的格式如下：
   4. **Traceroute** 持续发送 *TTL* 域递增的 IP datagram，直到最终达到目的主机（目的主机接收到的 IP datagram 的 *TTL* 域为 1）
   5. 发送 UDP datagrams 到目的主机，并且选择目的端口号为 unlikely value (larger than 30,000)，确保目的主机上没有应用程序在使用该端（应用程序使用端口号进行区分）。当 UDP datagrams 到达目的主机时，*TTL* 域为 1，就会将 datagram 传递给上层应用进行处理，但这里并没有对应的应用程序在执行，因此 UDP moudle 会产生一个 ICMP port unreachable error message 返回给发送方
   6. 发送方通过区分返回的 ICMP message 的类型就能够知道是否已经到达目的主机，ICMP time exceeded message 和 ICMP port unreachable error message
-  -
+
+**IP Source Routing Option**
+
+【20191125】
+
+> Normally IP routing is dynamic with each router making a decision about which next-hop router to send the datagram to. Applications have no control of this, and are normally not concerned with it.
+
+- IP Source Routing -- 发送方指定路由（the sender specifies the route）
+  1. **Strict source routing** ：发送方直接指定好到达目的主机的路径。如果在路由过程中，下一跳的路由器（在 source route 指定中）与当前转发的主机不直接连接，就会返回 ICMP source route failed error
+  2. **Loose source routing** ：发送方指定一个 IP 地址列表
+
+- 在发送 IP datagram 之前，需要填充好 IP 地址列表
+  - 发送方从应用程序获得 source route list，从 list 中移除第一项作为下一跳的目的地，将 IP datagram 的目的主机的 IP 地址加入到 list 的最后
+  - 接收到该 IP datagram 的路由器进行处理，检查是否与 dest 指定的 IP 地址相同，若不同，则转发出去（需要指定 loose source routing，如果没有指定，该路由器都不会接受到该 IP datagram）
+  - 若相同，则1）list 现在的第一项作为下一跳的目的地；2）
+
+```shell-session
+dest = D
+{#R1,R2,R3}
+   |
+   |
+   V
+-----  dest = R1  ------  dest = R2  ------  dest = R3  ------  dest = D   -----
+| S | ----------> | R1 | ----------> | R2 | ----------> | R3 | ----------> | D |
+----- {#R2,R3,D}  ------ {R1,#R3,D}  ------ {R1,R2,#D}  ------ {R1,R2,R3#} -----
+```
+
+**IP Routing**
+
+- Linux 查看 `route -n`，Mac 查看 `netstat -nr` （`-r` 表示列出路由表，`-n` 表示以数字形式打印 IP 地址）
+
+```shell-session
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+default         9.134.112.1     0.0.0.0         UG    0      0        0 eth1
+9.0.0.0         9.134.112.1     255.0.0.0       UG    0      0        0 eth1
+9.134.112.0     0.0.0.0         255.255.240.0   U     0      0        0 eth1
+10.0.0.0        9.134.112.1     255.0.0.0       UG    0      0        0 eth1
+100.64.0.0      9.134.112.1     255.192.0.0     UG    0      0        0 eth1
+link-local      0.0.0.0         255.255.0.0     U     1002   0        0 eth1
+172.16.0.0      9.134.112.1     255.240.0.0     UG    0      0        0 eth1
+192.168.0.0     9.134.112.1     255.255.0.0     UG    0      0        0 eth1
+```
+
+- 路由表中的每一项都包含有以下信息：
+
+  - *Destination* 目的 IP 地址
+    - the address of a host: host ID 不为 0，唯一标识一台主机
+    - the address of a network: host ID 为 0，标识当前网络上的所有主机
+  - *Gateway* 网关，下一跳路由器对应的 IP 地址，将 datagram 发送过去，然后网关执行转发
+    - a next-hop router: on a directly connected network to which we can send datagrams from delivery. It takes the datagrams we send it and forwards them to the final destination.
+    - a directly connected interface
+  - *Flags* 标识位。
+    - 其中一位标识 *Destination* 的 IP 地址对应是 a host 还是 a network
+    - 其中一位标识 *Gateway* 是 next-hop router 还是 a directly connected interface
+  - *Iface* 表示 datagrams 将由哪一个网卡（network interface）进行传输
+
+- 路由表中保存的信息：
+  - 
+- 
 
 
 

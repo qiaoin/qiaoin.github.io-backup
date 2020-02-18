@@ -8,6 +8,7 @@ In fact, in the next lab, we will map the entire bottom 256MB of the PC's phys
 
 > - 【实验二于2019年4月11日开始，于4月13日完成 Part 1，初稿报告完成于4月xx日】
 > - 【从学校毕业，正式参加工作后，就没有再看这部分内容了，现在重新拾起，2019年11月3日】
+> - 【11月29日晚上和12月30日 做完lab2】
 
 内存管理（Memory management）主要包含两个部分：
 
@@ -399,7 +400,7 @@ VPN range     Entry         Flags        Physical page
 
 包含两个 PDE，虚拟地址范围为 `0x00000000 ~ 0x003fffff` 和 `0xf0000000 ~ 0xf03fffff`，两个 PED 都是 `present` 和 `accessed`（TODO 这个具体表示什么，上面截图里也有），可使用 `PED[xxx]` 中的 `xxx` 来进行索引，即 page directory 的第 `0x000` 项和第 `0x3c0` 项，分别对应一个 page table，QEMU 将每个 page table 中当前已经完成映射的 `1024` 项 PTE 对应的标识（Flags）和物理页帧号都标识出来了。
 
-**一旦我们进入保护模式，在 CPU 上执行的指令就都是使用虚拟地址了**。所有的地址引用（memory references）都会被解释为虚拟地址，并且由硬件 MMU 负责执行地址转换——在使能页机制之前，虚拟地址转化为线性地址，线性地址与物理地址相等；当使能页机制之后，虚拟地址转化为线性地址，线性地址需在页机制的作用下转换为物理地址。因此，在 C 语言中使用的所有指针都是虚拟地址（all pointer in C are virtual addresses）。
+**一旦我们进入保护模式，在 CPU 上执行的指令就都是使用虚拟地址了**。所有的地址引用（memory references）都会被解释为虚拟地址，并且由硬件 MMU 负责执行地址转换——在使能页机制之前，虚拟地址转化为线性地址，线性地址与物理地址相等；当使能页机制之后，虚拟地址转化为线性地址，线性地址需在页机制的作用下转换为物理地址。因此，在 C 语言中使用的所有指针都是虚拟地址（all pointers in C are virtual addresses）。
 
 JOS 内核有时候使用的物理地址，有时候使用的是虚拟地址，为了方便，做如下规定：
 

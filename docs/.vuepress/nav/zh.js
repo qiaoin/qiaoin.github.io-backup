@@ -19,6 +19,8 @@ module.exports = [
         items: [
             { text: 'C++', link: '/lang/cpp/' },
             { text: 'Go', link: '/lang/go/' },
+            { text: 'JavaScript', link: '/lang/js/' },
+            { text: 'Python', link: '/lang/py/' },
         ]
     },
     { text: '分布式系统', link: '/system/' },
@@ -26,18 +28,18 @@ module.exports = [
         text: '源码阅读',
         ariaLabel: '源码阅读',
         items: [
-            { text: 'Linux', link: '/sourcecode/linux/' },
-            { text: 'Redis', link: '/sourcecode/redis/' },
-            { text: 'LevelDB', link: '/sourcecode/leveldb/' },
+            { text: 'Linux', link: '/source/linux/' },
+            { text: 'Redis', link: '/source/redis/' },
+            { text: 'LevelDB', link: '/source/leveldb/' },
         ]
     },
     { text: '乱翻书', link: '/reading/' },
-    {
-        text: '外语学习',
-        ariaLabel: '外语学习',
-        items: [
-            { text: '日语', link: '/foreign/japanese/' },
-            { text: '傲慢与偏见', link: '/foreign/pride-and-prejudice/' },
-        ]
-    }
+    // {
+    //     text: '外语学习',
+    //     ariaLabel: '外语学习',
+    //     items: [
+    //         { text: '日语', link: '/foreign/japanese/' },
+    //         { text: '傲慢与偏见', link: '/foreign/pride-and-prejudice/' },
+    //     ]
+    // }
 ];
