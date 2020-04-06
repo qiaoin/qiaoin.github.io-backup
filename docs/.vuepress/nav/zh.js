@@ -25,13 +25,15 @@ module.exports = [
     },
     { text: '分布式系统', link: '/system/' },
     {
-        text: '源码阅读',
-        ariaLabel: '源码阅读',
-        items: [
-            { text: 'Linux', link: '/source/linux/' },
-            { text: 'Redis', link: '/source/redis/' },
-            { text: 'LevelDB', link: '/source/leveldb/' },
-        ]
+        text: '源码阅读', link: '/source/'
+        // text: '源码阅读',
+        // ariaLabel: '源码阅读',
+        // items: [
+        //     { text: 'HowToRead', link: '/source/' },
+        //     { text: 'Linux', link: '/source/linux/' },
+        //     { text: 'Redis', link: '/source/redis/' },
+        //     { text: 'LevelDB', link: '/source/leveldb/' },
+        // ]
     },
     { text: '乱翻书', link: '/reading/' },
     // {

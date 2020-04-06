@@ -11,15 +11,16 @@ module.exports = {
       '/basic/compiler/': getCompilerSidebar(),
       '/basic/math/': getMathSidebar(),
       '/basic/linux/': getLinuxSidebar(),
-      '/system/': getSystemSidebar("系统", "论文"),
+      '/system/': getSystemSidebar(),
       '/lang/cpp/': getCppSidebar(),
       '/lang/go/': getGoSidebar(),
       '/lang/js/': getJsSidebar(),
       '/lang/py/': getPySidebar(),
-      '/sourcecode/linux/': getSourceLinuxSidebar(),
-      '/sourcecode/redis/': getSourceRedisSidebar(),
-      '/sourcecode/leveldb/': getSourceLeveldbSidebar(),
-      '/reading/': getReadingSidebar("计算机经典书籍", "杂的言"),
+      // '/sourcecode/linux/': getSourceLinuxSidebar(),
+      // '/sourcecode/redis/': getSourceRedisSidebar(),
+      // '/sourcecode/leveldb/': getSourceLeveldbSidebar(),
+      '/source/': getSourceSidebar(),
+      '/reading/': getReadingSidebar(),
       // '/foreign/japanese/': getJapaneseSidebar(),
       // '/foreign/pride-and-prejudice/': getPrideSidebar(),
     },
@@ -214,7 +215,7 @@ function getCppSidebar() {
       title: "STL",
       collapsable: false,
       children: [
-        // 'mit-6.828-lab1',
+        '0-stl-introduction',
         // 'mit-6.828-lab2',
       ]
     },
@@ -227,7 +228,7 @@ function getGoSidebar() {
       title: "多路复用",
       collapsable: false,
       children: [
-        // 'epoll',
+        'basic',
         // 'mit-6.828-lab2',
       ]
     },
@@ -286,108 +287,145 @@ function getPySidebar() {
   ]
 }
 
-function getSystemSidebar(groupA, groupB) {
+function getSystemSidebar() {
   return [
     {
-      title: groupA,
+      title: "MIT 6.824 课程笔记",
       collapsable: false,
       children: [
-        // 'design/',
-        // 'design/',
+        '1-introduction',
+        '2-rpc-and-threads',
+        '3-gfs',
       ]
     },
     {
-      title: groupB,
+      title: "MIT 6.824 实验",
       collapsable: false,
       children: [
-        // 'paper/',
-        // 'paper/',
+        'lab1-mapreduce',
+        'lab2-raft',
+        'lab3-kv-raft',
+        'lab4-sharded-kv',
       ]
     }
   ]
 }
 
-function getSourceLinuxSidebar() {
-  return [
-    {
-      title: "多路复用",
-      collapsable: false,
-      children: [
-        'epoll',
-        // 'mit-6.828-lab2',
-      ]
-    },
-    {
-      title: "调度器",
-      collapsable: false,
-      children: [
-        // 'mit-6.828-lab1',
-        // 'mit-6.828-lab2',
-      ]
-    },
-  ]
-}
+// function getSourceLinuxSidebar() {
+//   return [
+//     {
+//       title: "多路复用",
+//       collapsable: false,
+//       children: [
+//         'epoll',
+//         // 'mit-6.828-lab2',
+//       ]
+//     },
+//     {
+//       title: "调度器",
+//       collapsable: false,
+//       children: [
+//         // 'mit-6.828-lab1',
+//         // 'mit-6.828-lab2',
+//       ]
+//     },
+//   ]
+// }
 
-function getSourceRedisSidebar() {
+// function getSourceRedisSidebar() {
+//   return [
+//     {
+//       title: "多路复用",
+//       collapsable: false,
+//       children: [
+//         // '',
+//         // 'mit-6.828-lab2',
+//       ]
+//     },
+//     {
+//       title: "调度器",
+//       collapsable: false,
+//       children: [
+//         // 'mit-6.828-lab1',
+//         // 'mit-6.828-lab2',
+//       ]
+//     },
+//   ]
+// }
+
+// function getSourceLeveldbSidebar() {
+//   return [
+//     {
+//       title: "多路复用",
+//       collapsable: false,
+//       children: [
+//         // '',
+//         // 'mit-6.828-lab2',
+//       ]
+//     },
+//     {
+//       title: "调度器",
+//       collapsable: false,
+//       children: [
+//         // 'mit-6.828-lab1',
+//         // 'mit-6.828-lab2',
+//       ]
+//     },
+//   ]
+// }
+
+function getSourceSidebar() {
   return [
     {
-      title: "多路复用",
+      title: "Linux",
       collapsable: false,
       children: [
         // '',
-        // 'mit-6.828-lab2',
+        // 'linux/art-of-unix-programming',
+        // 'linux/programming-pearls',
+        // 'linux/practice-of-programming',
+        // 'linux/future-of-code',
+        // 'linux/software-uml',
+        // 'linux/building-microservices',
       ]
     },
     {
-      title: "调度器",
+      title: "Redis",
       collapsable: false,
       children: [
-        // 'mit-6.828-lab1',
-        // 'mit-6.828-lab2',
-      ]
-    },
-  ]
-}
-
-function getSourceLeveldbSidebar() {
-  return [
-    {
-      title: "多路复用",
-      collapsable: false,
-      children: [
-        // '',
-        // 'mit-6.828-lab2',
+        // 'redis/',
+        // 'redis/economics',
       ]
     },
     {
-      title: "调度器",
+      title: "LevelDB",
       collapsable: false,
       children: [
-        // 'mit-6.828-lab1',
-        // 'mit-6.828-lab2',
+        // 'leveldb/',
+        // 'leveldb/economics',
       ]
     },
   ]
 }
 
-function getReadingSidebar(groupA, groupB) {
+function getReadingSidebar() {
   return [
     {
-      title: groupA,
+      title: "计算机经典书籍",
       collapsable: false,
       children: [
-        'cs/',
         'cs/art-of-unix-programming',
         'cs/programming-pearls',
         'cs/practice-of-programming',
         'cs/future-of-code',
+        'cs/software-uml',
+        'cs/building-microservices',
       ]
     },
     {
-      title: groupB,
+      title: "杂的言",
       collapsable: false,
       children: [
-        'enjoy/',
         'enjoy/economics',
       ]
     }

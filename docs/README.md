@@ -3,7 +3,7 @@ home: true
 heroText: 桥的个人笔记
 tagline: 偷得浮生半日闲
 actionText: 快速阅读 →
-actionLink: /zh/guide/
+actionLink: /basic/os/
 features:
 - title: 计算机基础
   details: 跟着网络上的优秀公开课，重学一遍计算机基础课程。整理学习笔记，记录完整的实验思考。
