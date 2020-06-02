@@ -140,3 +140,5 @@ MapReduce 过程的主要网络耗时：
 data center has only one root switch in 2004
 
 In 2020, some modern data center has many root switches, and each rack switch has a connection to each of these replicated root switches, and the traffice is split up among the root switches, so modern data center networks have far more network throughput
+
+> 如何判断一个操作是不是 MapReduce 操作呢？或者说如何判断一个过程是否适合 MapReduce 实现？

@@ -215,7 +215,7 @@ function getCppSidebar() {
       title: "STL",
       collapsable: false,
       children: [
-        '0-stl-introduction',
+        'stl-introduction',
         // 'mit-6.828-lab2',
       ]
     },
@@ -228,7 +228,7 @@ function getGoSidebar() {
       title: "多路复用",
       collapsable: false,
       children: [
-        'basic',
+        'basis',
         // 'mit-6.828-lab2',
       ]
     },
@@ -296,6 +296,8 @@ function getSystemSidebar() {
         '1-introduction',
         '2-rpc-and-threads',
         '3-gfs',
+        '4-primary-backup-replication',
+        '5-go-threads-and-raft',
       ]
     },
     {
