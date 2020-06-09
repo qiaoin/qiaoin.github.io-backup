@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>分布式文件系统 | 在桥边</title>
+    <meta name="description" content="偷得浮生半日闲">
+    <meta name="generator" content="VuePress 1.4.0">
+    
+    
+    <link rel="preload" href="/assets/css/0.styles.932e3e91.css" as="style"><link rel="preload" href="/assets/js/app.e709e50c.js" as="script"><link rel="preload" href="/assets/js/2.aed79e5e.js" as="script"><link rel="preload" href="/assets/js/62.b81b7ba9.js" as="script"><link rel="prefetch" href="/assets/js/10.ebac5325.js"><link rel="prefetch" href="/assets/js/11.7b2d672a.js"><link rel="prefetch" href="/assets/js/12.54ea6fcf.js"><link rel="prefetch" href="/assets/js/13.db76fbea.js"><link rel="prefetch" href="/assets/js/14.fa058a50.js"><link rel="prefetch" href="/assets/js/15.9a7abe23.js"><link rel="prefetch" href="/assets/js/16.c2552b58.js"><link rel="prefetch" href="/assets/js/17.92650ebe.js"><link rel="prefetch" href="/assets/js/18.1329c666.js"><link rel="prefetch" href="/assets/js/19.856e1bd6.js"><link rel="prefetch" href="/assets/js/20.ae008e83.js"><link rel="prefetch" href="/assets/js/21.bf7a5edb.js"><link rel="prefetch" href="/assets/js/22.9037bd3b.js"><link rel="prefetch" href="/assets/js/23.e2b0062c.js"><link rel="prefetch" href="/assets/js/24.7a5dc9db.js"><link rel="prefetch" href="/assets/js/25.51d89d5c.js"><link rel="prefetch" href="/assets/js/26.05fca636.js"><link rel="prefetch" href="/assets/js/27.53049f31.js"><link rel="prefetch" href="/assets/js/28.4ec6e500.js"><link rel="prefetch" href="/assets/js/29.3710e311.js"><link rel="prefetch" href="/assets/js/3.ce4ee92b.js"><link rel="prefetch" href="/assets/js/30.113a865b.js"><link rel="prefetch" href="/assets/js/31.32df48b4.js"><link rel="prefetch" href="/assets/js/32.6a9518d9.js"><link rel="prefetch" href="/assets/js/33.22fc30e7.js"><link rel="prefetch" href="/assets/js/34.dc080c4a.js"><link rel="prefetch" href="/assets/js/35.b9d1347c.js"><link rel="prefetch" href="/assets/js/36.012e0f79.js"><link rel="prefetch" href="/assets/js/37.52431a51.js"><link rel="prefetch" href="/assets/js/38.6bded00e.js"><link rel="prefetch" href="/assets/js/39.238f7705.js"><link rel="prefetch" href="/assets/js/4.796409a6.js"><link rel="prefetch" href="/assets/js/40.66e360c2.js"><link rel="prefetch" href="/assets/js/41.58481556.js"><link rel="prefetch" href="/assets/js/42.f8d39693.js"><link rel="prefetch" href="/assets/js/43.01ee4634.js"><link rel="prefetch" href="/assets/js/44.8481426f.js"><link rel="prefetch" href="/assets/js/45.aa1a9e0d.js"><link rel="prefetch" href="/assets/js/46.b9a5cb66.js"><link rel="prefetch" href="/assets/js/47.6963d786.js"><link rel="prefetch" href="/assets/js/48.b7224a2c.js"><link rel="prefetch" href="/assets/js/49.98dead63.js"><link rel="prefetch" href="/assets/js/5.ab04d8a1.js"><link rel="prefetch" href="/assets/js/50.d290680d.js"><link rel="prefetch" href="/assets/js/51.9317bcc1.js"><link rel="prefetch" href="/assets/js/52.56ac34b2.js"><link rel="prefetch" href="/assets/js/53.84b9fe5a.js"><link rel="prefetch" href="/assets/js/54.d134d158.js"><link rel="prefetch" href="/assets/js/55.09360f53.js"><link rel="prefetch" href="/assets/js/56.b88937d0.js"><link rel="prefetch" href="/assets/js/57.9781ff09.js"><link rel="prefetch" href="/assets/js/58.8632f2c4.js"><link rel="prefetch" href="/assets/js/59.0b61fe78.js"><link rel="prefetch" href="/assets/js/6.a8f689ef.js"><link rel="prefetch" href="/assets/js/60.b23c8bc9.js"><link rel="prefetch" href="/assets/js/61.99305fe8.js"><link rel="prefetch" href="/assets/js/63.27df456b.js"><link rel="prefetch" href="/assets/js/64.fa3ffb7b.js"><link rel="prefetch" href="/assets/js/65.c9d34a2b.js"><link rel="prefetch" href="/assets/js/66.2000d26a.js"><link rel="prefetch" href="/assets/js/67.aabdb00e.js"><link rel="prefetch" href="/assets/js/68.9ccf045a.js"><link rel="prefetch" href="/assets/js/69.0e0e4de8.js"><link rel="prefetch" href="/assets/js/7.83edc202.js"><link rel="prefetch" href="/assets/js/70.aef1292b.js"><link rel="prefetch" href="/assets/js/8.1d8b6d49.js"><link rel="prefetch" href="/assets/js/9.c0d52356.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.932e3e91.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">在桥边</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  主页
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="计算机基础" class="dropdown-title"><span class="title">计算机基础</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/basic/os/" class="nav-link">
+  操作系统
+</a></li><li class="dropdown-item"><!----> <a href="/basic/algorithm/" class="nav-link">
+  算法与数据结构
+</a></li><li class="dropdown-item"><!----> <a href="/basic/network/" class="nav-link">
+  计算机网络
+</a></li><li class="dropdown-item"><!----> <a href="/basic/database/" class="nav-link">
+  数据库
+</a></li><li class="dropdown-item"><!----> <a href="/basic/compiler/" class="nav-link">
+  编译原理
+</a></li><li class="dropdown-item"><!----> <a href="/basic/math/" class="nav-link">
+  数学
+</a></li><li class="dropdown-item"><!----> <a href="/basic/linux/" class="nav-link">
+  Linux
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="编程语言" class="dropdown-title"><span class="title">编程语言</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/lang/cpp/" class="nav-link">
+  C++
+</a></li><li class="dropdown-item"><!----> <a href="/lang/go/" class="nav-link">
+  Go
+</a></li><li class="dropdown-item"><!----> <a href="/lang/js/" class="nav-link">
+  JavaScript
+</a></li><li class="dropdown-item"><!----> <a href="/lang/py/" class="nav-link">
+  Python
+</a></li></ul></div></div><div class="nav-item"><a href="/system/" class="nav-link router-link-active">
+  分布式系统
+</a></div><div class="nav-item"><a href="/source/" class="nav-link">
+  源码阅读
+</a></div><div class="nav-item"><a href="/reading/" class="nav-link">
+  乱翻书
+</a></div> <a href="https://github.com/qiaoin/qiaoin.github.io" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  主页
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="计算机基础" class="dropdown-title"><span class="title">计算机基础</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/basic/os/" class="nav-link">
+  操作系统
+</a></li><li class="dropdown-item"><!----> <a href="/basic/algorithm/" class="nav-link">
+  算法与数据结构
+</a></li><li class="dropdown-item"><!----> <a href="/basic/network/" class="nav-link">
+  计算机网络
+</a></li><li class="dropdown-item"><!----> <a href="/basic/database/" class="nav-link">
+  数据库
+</a></li><li class="dropdown-item"><!----> <a href="/basic/compiler/" class="nav-link">
+  编译原理
+</a></li><li class="dropdown-item"><!----> <a href="/basic/math/" class="nav-link">
+  数学
+</a></li><li class="dropdown-item"><!----> <a href="/basic/linux/" class="nav-link">
+  Linux
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="编程语言" class="dropdown-title"><span class="title">编程语言</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/lang/cpp/" class="nav-link">
+  C++
+</a></li><li class="dropdown-item"><!----> <a href="/lang/go/" class="nav-link">
+  Go
+</a></li><li class="dropdown-item"><!----> <a href="/lang/js/" class="nav-link">
+  JavaScript
+</a></li><li class="dropdown-item"><!----> <a href="/lang/py/" class="nav-link">
+  Python
+</a></li></ul></div></div><div class="nav-item"><a href="/system/" class="nav-link router-link-active">
+  分布式系统
+</a></div><div class="nav-item"><a href="/source/" class="nav-link">
+  源码阅读
+</a></div><div class="nav-item"><a href="/reading/" class="nav-link">
+  乱翻书
+</a></div> <a href="https://github.com/qiaoin/qiaoin.github.io" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>MIT 6.824 课程笔记</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/system/1-introduction.html" class="sidebar-link">分布式系统导入</a></li><li><a href="/system/2-rpc-and-threads.html" class="sidebar-link">RPC 和线程</a></li><li><a href="/system/3-gfs.html" class="active sidebar-link">分布式文件系统</a></li><li><a href="/system/4-primary-backup-replication.html" class="sidebar-link">Primary Backup Replication</a></li><li><a href="/system/5-go-threads-and-raft.html" class="sidebar-link">Go, Threads, and Raft</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>MIT 6.824 实验</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/system/lab1-mapreduce.html" class="sidebar-link">Lab 1 - MapReduce</a></li><li><a href="/system/lab2-raft.html" class="sidebar-link">Lab 2 - Raft</a></li><li><a href="/system/lab3-kv-raft.html" class="sidebar-link">Lab 3 - KV Raft</a></li><li><a href="/system/lab4-sharded-kv.html" class="sidebar-link">Lab 4 - Sharded KV</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><ul><li>how to design a good interface to a big storage system</li> <li>how to design the inner of the storage system</li></ul> <p>the space of the distributed system</p> <ul><li>Why is it hard?
+<ul><li>Performance -&gt; Sharding</li> <li>Faults -&gt; Tolerance</li> <li>Tolerance -&gt; Replication</li> <li>Replication -&gt; In-Consistency</li> <li>Consistency -&gt; Low Performance</li></ul></li></ul> <p>Strong consistency / good consistency: we want to build a system whose behavior to applications or clients looks just like you would expect from talking to a single server.</p> <p>The worst replication design</p> <p>two servers, each with a complete copy of data, so on disks they are both these keys and values in tables</p> <p>intuition: want to keep these tables identical so that if one server fails we can read or write from the other server. Writes must be processed by both servers and reads have to be able to be processed by a single server otherwise it's not fault tolerant</p> <p><strong>GFS</strong></p> <p>Big
+Fast
+Global
+Sharding
+Automatic recovery
+Single data center
+Internal use
+Big sequential access, not random access
+各个想法都不是新的，但是让学术界看到工业界使用的大的分布式存储系统，并且运行的很好
+Single master
+Applidcations 通过 checksum 去做校验，是否是 right data</p> <p>master keeps the mapping from the file names to where to find the data</p> <p><strong>Master data</strong></p> <ul><li>file name -&gt; array of chunk handles: tells you where to find the data or what the identifiers are, on disk</li> <li>handle -&gt; 1. list of chunk servers, not no disk
+2. every chunk has a current version number, on disk
+3. primary, not on disk
+4. a lease expiration time, not on disk</li> <li>log, checkpoint - on disk</li></ul> <p>master stores all these data on disk as well as in memory</p> <p>whenever a file is extended with a new chunk goes to the next 64MB boundary or the version number changes because the new primary is designated, that means that the master has to first append a little record to its log basically saying &quot;oh, I just added a chunk to this file or I just changed the version number&quot;, so every time I changes one of those that needs to writes right to its disk</p> <p>=&gt; there is limits the rate at which the master can change things because you can only write your disk many times per second</p> <p>=&gt; using a log here, rather than a database, a b-tree or a hash table on disk, you can append to a log very efficiently</p> <p>=&gt; checkpoints its complete state to disk</p> <p><strong>Read</strong></p> <p>the application has a file name and an offset, it sends the file name and the offset to the master, and the master looks up the file name in its file table and then chunk is 64MB, and we can use the offset divided by 64MB to find which chunk and then it looks at that chunk in its chunk table to find the list of chunk servers that have replicas of that data, and returns that list to the client</p> <ol><li>filename, offset -&gt; master</li> <li>Master sends chunk handler, list of chunk server
+Client cached the result</li> <li>Client talk to the chunk server, the chunk server sends the data to the client</li></ol> <p><strong>Write</strong></p> <p>record appends</p> <ol><li>clent asks the master to tell about the chunk servers that hold the very last current chunk in this file</li></ol> <p>No primary?</p> <ul><li>the master needs to find out the set of chunk servers that have the most up-to-data copy of the chunk =&gt; find out up-to-date replicas
+<ul><li>&quot;up-to-date&quot;: a replica whose version of the chunk is equal to the version number that the master knows is the most up-to-date version numbers</li> <li>master memorys the version numbers on disk</li></ul></li> <li>the master picks one of them to be the primary, and the others to be secondary servers among the replicas set at the most recent version</li> <li>the master increments the version number, and writes that to disk</li> <li>the master tells the client the primary, the secondary servers, and the most recent version number, and the primary, the secondary servers store the version on their own disks, the master also gives the primary a lease which basically tells the primary &quot;you are allowed to be primary for the next 60s, after 60s you have to stop&quot;</li> <li>the master writes the version number on disk</li></ul> <ol start="2"><li>the client now konws who the primary and the secondaries are</li> <li>the primary picks an offset, and all replicas including the primary are told to write the new appended record at that offset</li> <li>if a secondary actually wrote the data to its disk at that offset, it will reply &quot;yes&quot; to the primary</li> <li>if the primary collects a &quot;yes&quot; answer from all of the secondaries, the primary reply &quot;success&quot; to the client</li></ol> <ul><li>if the primary doesn't get the &quot;yes&quot; answer from one of the secondaries or the secondary replay &quot;sorry&quot; something bad, then the primary replies &quot;no&quot; to the client</li> <li>if the client gets an error like that back from the primary, the client is supposed to reissue the entire append sequence</li></ul> <p>the master needs to assemble the list of chunk servers that have the most recent version number, the master know the most recent version number stored on disk</p> <p>each chunk server along with each chunk also remembers the version number of the chunk that it stores</p> <p>if the master reboots and talks to chunk servers, and one of the chunk servers reboot and reports a version number that is higher than the version number the master remembers, then the master assumes that there was a failure while it was assigning a new primary and adopts the higher version number that it heard from the a chunk server</p> <p>split brain</p> <p>network partition: some network error which the master can't talk to the primary, but the primary can talk to clients, partial network failure</p> <p>避免给同一个 chunk 同时分配两个 primary</p> <ul><li>master 在分配一个 primary 时，同时给它一个 lease，the right to be primary until a certain time</li> <li>the master remembers and knows how long the lease lasts</li> <li>the primary know how long the lease lasts, if the lease expires, the primary will simply stop executing client requests (ignore or reject)</li> <li>if the master can't talk to the primary, the master would like to designate a new primary, the master must wait for the lease to expire for the previous primary</li></ul> <p>true GFS to Strong consistency</p> <ul><li>the primary needs to detect duplicate requests</li> <li>when the primary asks the secondaries to append something, the secondaries have to be able to execute it successfully, and have to be careful not to expose that data to readers until the primary is sure that all the secondaries really will be able to execute the append
+<ul><li>first phase: the primary asks the secondaries to do this append operation</li> <li>all the secondaries promose to be able to do the operation, only then the primary says ok you can do this append operation</li> <li>two-phase commit</li></ul></li> <li>if the primary crashes, 从 secondaries 选出新的 primary, 需要确定现在的操作执行到了哪里</li></ul> <p>the most serious limitation:</p> <p>a single master and the master had to have a table entry for every file and every chunk, that means does the GFS use grew and they're about more and more files, the master just ran out of the memory to store the files</p> <p>the load on a single master from thousands of clents started to be too much in the master kernel</p> <p>the master was not an automatic store for master failover in the original GFS paper, it required human intervention to deal with a master that had permanently crashed and needs to be replaced, and that cound take tens of minutes or more, it was too long for failure recovery for some applications</p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/system/2-rpc-and-threads.html" class="prev">
+        RPC 和线程
+      </a></span> <span class="next"><a href="/system/4-primary-backup-replication.html">
+        Primary Backup Replication
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.e709e50c.js" defer></script><script src="/assets/js/2.aed79e5e.js" defer></script><script src="/assets/js/62.b81b7ba9.js" defer></script>
+  </body>
+</html>

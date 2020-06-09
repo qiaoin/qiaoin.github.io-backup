@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>微服务设计 | 在桥边</title>
+    <meta name="description" content="偷得浮生半日闲">
+    <meta name="generator" content="VuePress 1.4.0">
+    
+    
+    <link rel="preload" href="/assets/css/0.styles.932e3e91.css" as="style"><link rel="preload" href="/assets/js/app.e709e50c.js" as="script"><link rel="preload" href="/assets/js/2.aed79e5e.js" as="script"><link rel="preload" href="/assets/js/49.98dead63.js" as="script"><link rel="prefetch" href="/assets/js/10.ebac5325.js"><link rel="prefetch" href="/assets/js/11.7b2d672a.js"><link rel="prefetch" href="/assets/js/12.54ea6fcf.js"><link rel="prefetch" href="/assets/js/13.db76fbea.js"><link rel="prefetch" href="/assets/js/14.fa058a50.js"><link rel="prefetch" href="/assets/js/15.9a7abe23.js"><link rel="prefetch" href="/assets/js/16.c2552b58.js"><link rel="prefetch" href="/assets/js/17.92650ebe.js"><link rel="prefetch" href="/assets/js/18.1329c666.js"><link rel="prefetch" href="/assets/js/19.856e1bd6.js"><link rel="prefetch" href="/assets/js/20.ae008e83.js"><link rel="prefetch" href="/assets/js/21.bf7a5edb.js"><link rel="prefetch" href="/assets/js/22.9037bd3b.js"><link rel="prefetch" href="/assets/js/23.e2b0062c.js"><link rel="prefetch" href="/assets/js/24.7a5dc9db.js"><link rel="prefetch" href="/assets/js/25.51d89d5c.js"><link rel="prefetch" href="/assets/js/26.05fca636.js"><link rel="prefetch" href="/assets/js/27.53049f31.js"><link rel="prefetch" href="/assets/js/28.4ec6e500.js"><link rel="prefetch" href="/assets/js/29.3710e311.js"><link rel="prefetch" href="/assets/js/3.ce4ee92b.js"><link rel="prefetch" href="/assets/js/30.113a865b.js"><link rel="prefetch" href="/assets/js/31.32df48b4.js"><link rel="prefetch" href="/assets/js/32.6a9518d9.js"><link rel="prefetch" href="/assets/js/33.22fc30e7.js"><link rel="prefetch" href="/assets/js/34.dc080c4a.js"><link rel="prefetch" href="/assets/js/35.b9d1347c.js"><link rel="prefetch" href="/assets/js/36.012e0f79.js"><link rel="prefetch" href="/assets/js/37.52431a51.js"><link rel="prefetch" href="/assets/js/38.6bded00e.js"><link rel="prefetch" href="/assets/js/39.238f7705.js"><link rel="prefetch" href="/assets/js/4.796409a6.js"><link rel="prefetch" href="/assets/js/40.66e360c2.js"><link rel="prefetch" href="/assets/js/41.58481556.js"><link rel="prefetch" href="/assets/js/42.f8d39693.js"><link rel="prefetch" href="/assets/js/43.01ee4634.js"><link rel="prefetch" href="/assets/js/44.8481426f.js"><link rel="prefetch" href="/assets/js/45.aa1a9e0d.js"><link rel="prefetch" href="/assets/js/46.b9a5cb66.js"><link rel="prefetch" href="/assets/js/47.6963d786.js"><link rel="prefetch" href="/assets/js/48.b7224a2c.js"><link rel="prefetch" href="/assets/js/5.ab04d8a1.js"><link rel="prefetch" href="/assets/js/50.d290680d.js"><link rel="prefetch" href="/assets/js/51.9317bcc1.js"><link rel="prefetch" href="/assets/js/52.56ac34b2.js"><link rel="prefetch" href="/assets/js/53.84b9fe5a.js"><link rel="prefetch" href="/assets/js/54.d134d158.js"><link rel="prefetch" href="/assets/js/55.09360f53.js"><link rel="prefetch" href="/assets/js/56.b88937d0.js"><link rel="prefetch" href="/assets/js/57.9781ff09.js"><link rel="prefetch" href="/assets/js/58.8632f2c4.js"><link rel="prefetch" href="/assets/js/59.0b61fe78.js"><link rel="prefetch" href="/assets/js/6.a8f689ef.js"><link rel="prefetch" href="/assets/js/60.b23c8bc9.js"><link rel="prefetch" href="/assets/js/61.99305fe8.js"><link rel="prefetch" href="/assets/js/62.b81b7ba9.js"><link rel="prefetch" href="/assets/js/63.27df456b.js"><link rel="prefetch" href="/assets/js/64.fa3ffb7b.js"><link rel="prefetch" href="/assets/js/65.c9d34a2b.js"><link rel="prefetch" href="/assets/js/66.2000d26a.js"><link rel="prefetch" href="/assets/js/67.aabdb00e.js"><link rel="prefetch" href="/assets/js/68.9ccf045a.js"><link rel="prefetch" href="/assets/js/69.0e0e4de8.js"><link rel="prefetch" href="/assets/js/7.83edc202.js"><link rel="prefetch" href="/assets/js/70.aef1292b.js"><link rel="prefetch" href="/assets/js/8.1d8b6d49.js"><link rel="prefetch" href="/assets/js/9.c0d52356.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.932e3e91.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">在桥边</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  主页
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="计算机基础" class="dropdown-title"><span class="title">计算机基础</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/basic/os/" class="nav-link">
+  操作系统
+</a></li><li class="dropdown-item"><!----> <a href="/basic/algorithm/" class="nav-link">
+  算法与数据结构
+</a></li><li class="dropdown-item"><!----> <a href="/basic/network/" class="nav-link">
+  计算机网络
+</a></li><li class="dropdown-item"><!----> <a href="/basic/database/" class="nav-link">
+  数据库
+</a></li><li class="dropdown-item"><!----> <a href="/basic/compiler/" class="nav-link">
+  编译原理
+</a></li><li class="dropdown-item"><!----> <a href="/basic/math/" class="nav-link">
+  数学
+</a></li><li class="dropdown-item"><!----> <a href="/basic/linux/" class="nav-link">
+  Linux
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="编程语言" class="dropdown-title"><span class="title">编程语言</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/lang/cpp/" class="nav-link">
+  C++
+</a></li><li class="dropdown-item"><!----> <a href="/lang/go/" class="nav-link">
+  Go
+</a></li><li class="dropdown-item"><!----> <a href="/lang/js/" class="nav-link">
+  JavaScript
+</a></li><li class="dropdown-item"><!----> <a href="/lang/py/" class="nav-link">
+  Python
+</a></li></ul></div></div><div class="nav-item"><a href="/system/" class="nav-link">
+  分布式系统
+</a></div><div class="nav-item"><a href="/source/" class="nav-link">
+  源码阅读
+</a></div><div class="nav-item"><a href="/reading/" class="nav-link router-link-active">
+  乱翻书
+</a></div> <a href="https://github.com/qiaoin/qiaoin.github.io" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  主页
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="计算机基础" class="dropdown-title"><span class="title">计算机基础</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/basic/os/" class="nav-link">
+  操作系统
+</a></li><li class="dropdown-item"><!----> <a href="/basic/algorithm/" class="nav-link">
+  算法与数据结构
+</a></li><li class="dropdown-item"><!----> <a href="/basic/network/" class="nav-link">
+  计算机网络
+</a></li><li class="dropdown-item"><!----> <a href="/basic/database/" class="nav-link">
+  数据库
+</a></li><li class="dropdown-item"><!----> <a href="/basic/compiler/" class="nav-link">
+  编译原理
+</a></li><li class="dropdown-item"><!----> <a href="/basic/math/" class="nav-link">
+  数学
+</a></li><li class="dropdown-item"><!----> <a href="/basic/linux/" class="nav-link">
+  Linux
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="编程语言" class="dropdown-title"><span class="title">编程语言</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/lang/cpp/" class="nav-link">
+  C++
+</a></li><li class="dropdown-item"><!----> <a href="/lang/go/" class="nav-link">
+  Go
+</a></li><li class="dropdown-item"><!----> <a href="/lang/js/" class="nav-link">
+  JavaScript
+</a></li><li class="dropdown-item"><!----> <a href="/lang/py/" class="nav-link">
+  Python
+</a></li></ul></div></div><div class="nav-item"><a href="/system/" class="nav-link">
+  分布式系统
+</a></div><div class="nav-item"><a href="/source/" class="nav-link">
+  源码阅读
+</a></div><div class="nav-item"><a href="/reading/" class="nav-link router-link-active">
+  乱翻书
+</a></div> <a href="https://github.com/qiaoin/qiaoin.github.io" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>计算机经典书籍</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/reading/cs/art-of-unix-programming.html" class="sidebar-link">UNIX 编程艺术</a></li><li><a href="/reading/cs/programming-pearls.html" class="sidebar-link">编程珠玑</a></li><li><a href="/reading/cs/practice-of-programming.html" class="sidebar-link">程序设计实践</a></li><li><a href="/reading/cs/future-of-code.html" class="sidebar-link">代码的未来</a></li><li><a href="/reading/cs/software-uml.html" class="sidebar-link">软件方法</a></li><li><a href="/reading/cs/building-microservices.html" class="active sidebar-link">微服务设计</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>杂的言</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/reading/enjoy/economics.html" class="sidebar-link">经济学原理</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><blockquote><p>开始于 2020 年 3 月 8 日</p></blockquote> <h2 id="幂等"><a href="#幂等" class="header-anchor">#</a> 幂等</h2> <p>幂等的含义是，一个调用被发送多次所产生的总的副作用和被发送一次所产生的副作用是一样的。服务间的调用会有三种结果：成功、失败和超时。前两者是明确的状态，而超时则是完全不知道是什么状态。</p> <p>比如，超时原因是网络传输丢包的问题，可能是请求时就没有请求到，也有可能是请求到了，返回结果时没有返回到等情况。于是我们完不知道下游系统是否收到了请求，而收到了请求是否处理了，成功 / 失败的状态在返回时是否遇到了网络问题。总之，请求方完全不知道是怎么回事。</p> <p>在这种情况下，一般有两种处理方式：</p> <ul><li>一种是需要下游系统提供相应的查询接口。上游系统在 timeout 后去查询一下。如果查到了，就表明已经做了，成功了就不用做了，失败了就走失败流程。</li> <li>另一种是通过幂等性的方式。也就是说，把这个查询操作交给下游系统，我上游系统只管重试，下游系统保证一次和多次的请求结果是一样的。</li></ul> <p>对于第一种方式，需要对方提供一个查询接口来做配合。而第二种方式则需要下游的系统提供支持幂等性的接口。</p> <p>要做到幂等性的接口，需要有一个唯一的标识，来标志多次请求为同一个请求。</p> <p>在全局唯一 ID 的算法中，介绍 Twitter 的开源项目 Snowflake。它是一个分布式 ID 的生成算法。其核心思想是，产生一个 long 型的 ID，其中：</p> <ul><li>41bits 作为毫秒数。大概可以用 69.7 年；</li> <li>10bits 作为机器编号（5bits 是数据中心，5bits 的机器 ID），支持 1024 个实例；</li> <li>12bits 作为毫秒内的序列号。一毫秒可以生成 4096 个序号。</li></ul></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/reading/cs/software-uml.html" class="prev">
+        软件方法
+      </a></span> <span class="next"><a href="/reading/enjoy/economics.html">
+        经济学原理
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.e709e50c.js" defer></script><script src="/assets/js/2.aed79e5e.js" defer></script><script src="/assets/js/49.98dead63.js" defer></script>
+  </body>
+</html>
