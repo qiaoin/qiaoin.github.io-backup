@@ -98,7 +98,7 @@ func ConcurrentMutex(url string, fetcher Fetcher, f *fetchState) {
 - defer
 - 匿名函数这里为什么需要传入一个参数？这里是由于，for-range 遍历时定义的 u，在第一次为 url1，传入第一个 go routine，接下来遍历到第二个 url2，传入第二个 go routine，我们希望得到 u 的一份 copy，而不是每次循环都更新 u，因为可能循环更新的时候，之前 launch 的 go routine 还未读取到之前的旧的 u，而读取到了更新的 u，这是不符合预期的
 - 如果一个 inner func 使用了一个 surrounding func 的变量，但 surrounding func returns，这时，inner func 使用的变量指向哪里？Go 分析出闭包（closures）使用了 outer func 的变量，编译器会在 heap 上分配内存。
-- WaitGroup
+- WaitGroup, Add, Done, Wait
 
 find races in practice - using automated tools, go race detector
 命令行运行时，go run -race xxx.go
@@ -129,7 +129,7 @@ func master(ch chan []string, fetcher Fetcher) {
                 go worker(u, ch, fetcher)
             }
         }
-        u -= 1
+        n -= 1
         if n == 0 {
             break
         }
